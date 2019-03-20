@@ -40,7 +40,11 @@ class PostgresTable(DBTable):
 			query.append("ADD COLUMN `{}` {}".format(col.fieldname, col.get_definition()))
 
 		for col in self.change_type:
-			query.append("ALTER COLUMN `{}` TYPE {}".format(col.fieldname, get_definition(col.fieldtype, precision=col.precision, length=col.length)))
+			# Add USING :: timestamp if type is datetime
+			query.append("ALTER COLUMN `{}` TYPE {} {}".format(
+				col.fieldname, 
+				get_definition(col.fieldtype, precision=col.precision, length=col.length), 
+				"USING {}::timestamp without time zone".format(col.fieldname) if col.fieldtype == "Datetime" else ""))
 
 		for col in self.set_default:
 			if col.fieldname=="name":

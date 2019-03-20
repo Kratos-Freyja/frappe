@@ -78,25 +78,27 @@ def get_modules_from_app(app):
 	return active_modules_list
 
 def get_all_empty_tables_by_module():
-	results = frappe.db.sql("""
-		SELECT
-			name, module
-		FROM information_schema.tables as i
-		JOIN tabDocType as d
-			ON i.table_name = CONCAT('tab', d.name)
-		WHERE table_rows = 0;
-
-	""")
-
 	empty_tables_by_module = {}
+	try:
+		results = frappe.db.sql("""
+			SELECT
+				name, module
+			FROM information_schema.tables as i
+			JOIN tabDocType as d
+				ON i.table_name = CONCAT('tab', d.name)
+			WHERE table_rows = 0;
 
-	for doctype, module in results:
-		if module in empty_tables_by_module:
-			empty_tables_by_module[module].append(doctype)
-		else:
-			empty_tables_by_module[module] = [doctype]
+		""")
 
-	return empty_tables_by_module
+		for doctype, module in results:
+			if module in empty_tables_by_module:
+				empty_tables_by_module[module].append(doctype)
+			else:
+				empty_tables_by_module[module] = [doctype]
+
+		return empty_tables_by_module
+	except Exception:
+		return empty_tables_by_module
 
 def is_domain(module):
 	return module.get("category") == "Domains"

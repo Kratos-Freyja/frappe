@@ -48,6 +48,9 @@ class PostgresTable(DBTable):
 				# Add USING :: timestamp if type is datetime
 				using_clause = "USING {}::timestamp without time zone".format(col.fieldname)
 
+			elif col.fieldtype in ("Check"):	
+				using_clause = "USING {}::smallint".format(col.fieldname)
+
 			query.append("ALTER COLUMN `{}` TYPE {} {}".format(
 				col.fieldname, 
 				get_definition(col.fieldtype, precision=col.precision, length=col.length), using_clause))

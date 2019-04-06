@@ -19,5 +19,11 @@ frappe.ui.form.ControlJSON = frappe.ui.form.ControlData.extend({
 				return '';
 			}
 		}
+	},
+	set_input: function(value) {
+		this.last_value = JSON.stringify(this.value, null, '\t');
+		this.value = JSON.stringify(value, null, '\t');
+		this.set_formatted_input(this.value);
+		this.set_mandatory && this.set_mandatory(this.value);
 	}
 });

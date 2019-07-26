@@ -86,8 +86,10 @@ class Database(object):
 	def get_database_size(self):
 		pass
 
-	def sql(self, query, values=(), as_dict = 0, as_list = 0, formatted = 0,
-		debug=0, ignore_ddl=0, as_utf8=0, auto_commit=0, update=None, explain=False):
+	def sql(
+		self, query, values=(), as_dict=0, as_list=0, formatted=0,
+		debug=0, ignore_ddl=0, as_utf8=0, auto_commit=0, update=None,
+		explain=False):
 		"""Execute a SQL query and fetch all rows.
 
 		:param query: SQL query.
@@ -132,7 +134,7 @@ class Database(object):
 			if debug:
 				time_start = time()
 
-			if values!=():
+			if values != ():
 				if isinstance(values, dict):
 					values = dict(values)
 
@@ -147,7 +149,7 @@ class Database(object):
 						frappe.errprint(query % values)
 					except TypeError:
 						frappe.errprint([query, values])
-				if (frappe.conf.get("logging") or False)==2:
+				if (frappe.conf.get("logging") or False) == 2:
 					frappe.log("<<<< query")
 					frappe.log(query)
 					frappe.log("with values:")
@@ -163,11 +165,10 @@ class Database(object):
 					if explain:
 						self.explain_query(query)
 					frappe.errprint(query)
-				if (frappe.conf.get("logging") or False)==2:
+				if (frappe.conf.get("logging") or False) == 2:
 					frappe.log("<<<< query")
 					frappe.log(query)
 					frappe.log(">>>>")
-
 				self._cursor.execute(query)
 
 				if frappe.flags.in_migrate:

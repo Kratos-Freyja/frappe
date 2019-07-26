@@ -37,6 +37,8 @@ import './multicheck';
 import './table_multiselect';
 import './multiselect_pills';
 import './rating';
+import './json';
+import './jsonb';
 
 frappe.ui.form.make_control = function (opts) {
 	var control_class_name = "Control" + opts.df.fieldtype.replace(/ /g, "");
